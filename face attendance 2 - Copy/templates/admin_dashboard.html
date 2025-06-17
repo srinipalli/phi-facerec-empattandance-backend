@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a73e8">
+  <link rel="manifest" href="/manifest.json">
+  <title>Face Attendance</title>
+  <script>
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('SW registered:', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed:', registrationError);
+          });
+      });
+    }
+
+    // Handle PWA installation
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBtn').style.display = 'block';
+    });
+
+    function installPWA() {
+      if(deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted install');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Welcome Admin</h2>
+
+  <form method="GET" action="/admin_dashboard">
+    <label for="date">Select Date:</label>
+    <input type="date" name="date" value="{{ selected_date }}">
+
+    <label for="sort">Sort by:</label>
+    <select name="sort">
+      <option value="intime_asc" {% if sort_by == 'intime_asc' %}selected{% endif %}>Earliest Punch In</option>
+      <option value="intime_desc" {% if sort_by == 'intime_desc' %}selected{% endif %}>Latest Punch In</option>
+      <option value="outtime_asc" {% if sort_by == 'outtime_asc' %}selected{% endif %}>Earliest Punch Out</option>
+      <option value="outtime_desc" {% if sort_by == 'outtime_desc' %}selected{% endif %}>Latest Punch Out</option>
+    </select>
+
+
+    <button type="submit">Filter</button>
+  </form>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Employee ID</th>
+        <th>Punch In Time</th>
+        <th>Punch Out Time</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in records %}
+        <tr>
+          <td>{{ row.username }}</td>
+          <td>{{ row.employee_id }}</td>
+          <td>{{ row.intime }}</td>
+          <td>{{ row.outtime }}</td>
+          <td>{{ row.latitude }}</td>
+          <td>{{ row.longitude }}</td>
+          <td>{{ row.address }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+<a href="{{ url_for('logout') }}">Logout</a>
+</html>
