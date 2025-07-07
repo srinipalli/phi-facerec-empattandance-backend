@@ -1,6 +1,0 @@
-Flask
-face_recognition
-numpy
-opencv-python
-Werkzeug
-requests
