@@ -1,0 +1,225 @@
+:root {
+  --primary-color: #4a6da7;
+  --primary-dark: #3a5a8f;
+  --primary-light: #6a8cc8;
+  --secondary-color: #5a6b8a;
+  --dark-color: #1c1e21;
+  --light-color: #f0f2f5;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --border-radius: 10px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--light-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  color: var(--dark-color);
+}
+
+.navbar {
+  background-color: var(--dark-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.portal-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 4rem 0;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  transform: rotate(30deg);
+  pointer-events: none;
+}
+
+.portal-card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: white;
+  margin-bottom: 2rem;
+  transition: var(--transition);
+}
+
+.portal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.portal-card-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.portal-card-body {
+  padding: 2.5rem;
+}
+
+.portal-form-label {
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+.portal-form-control {
+  border: 1px solid #dee2e6;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1rem;
+  transition: var(--transition);
+}
+
+.portal-form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(74, 109, 167, 0.25);
+}
+
+.portal-btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: white;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.camera-container {
+  background-color: #f8f9fa;
+  border-radius: calc(var(--border-radius) - 2px);
+  padding: 20px;
+  display: inline-block;
+  margin: 0 auto 1.5rem;
+  border: 1px solid #dee2e6;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.face-camera {
+  border-radius: calc(var(--border-radius) - 4px);
+  display: block;
+  margin: 0 auto;
+  background-color: #e9ecef;
+}
+
+.footer {
+  background-color: var(--dark-color);
+  color: white;
+  padding: 2.5rem 0;
+  margin-top: auto;
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+/* Password strength indicator */
+.password-strength {
+  height: 4px;
+  background-color: #e9ecef;
+  border-radius: 2px;
+  margin-top: 0.25rem;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength-weak {
+  background-color: var(--danger-color);
+  width: 25%;
+}
+
+.password-strength-medium {
+  background-color: var(--warning-color);
+  width: 50%;
+}
+
+.password-strength-strong {
+  background-color: var(--success-color);
+  width: 75%;
+}
+
+.password-strength-very-strong {
+  background-color: var(--success-color);
+  width: 100%;
+}
+
+.password-hints {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+.password-hints ul {
+  padding-left: 1.25rem;
+  margin-bottom: 0;
+}
+
+.password-hints li {
+  margin-bottom: 0.25rem;
+}
+
+.password-hints .valid {
+  color: var(--success-color);
+}
+
+.password-hints .valid::before {
+  content: "✓ ";
+}
+
+.password-hints .invalid {
+  color: var(--danger-color);
+}
+
+.password-hints .invalid::before {
+  content: "✗ ";
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .portal-header {
+    padding: 3rem 0;
+  }
+
+  .portal-card-body {
+    padding: 1.5rem;
+  }
+
+  .camera-container {
+    padding: 15px;
+  }
+}
