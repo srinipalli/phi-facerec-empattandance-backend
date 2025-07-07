@@ -31,7 +31,8 @@ ArgusScan is a fast, secure, and privacy-conscious face recognition–powered at
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Ami202512/ArgusScan.git
+   git clone https://github.com/srinipalli/phi-facerec-empattandance-backend
+   cd ArgusScan
 
 2. **Install dependencies**
    ```bash
