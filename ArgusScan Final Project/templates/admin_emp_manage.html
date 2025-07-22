@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArgusScan</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="theme-color" content="#0d6efd">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../static/css/admin_dashboard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="d-flex align-items-center">
+          <div class="me-3">
+            <i class="fas fa-shield-alt fs-3 text-primary"></i>
+          </div>
+          <div>
+            <h5 class="mb-0 fw-bold text-white">Admin Panel</h5>
+            <small class="text-white-50">Attendance System</small>
+          </div>
+        </div>
+      </div>
+      <hr class="border-secondary my-0">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+          <i class="fas fa-tachometer-alt me-2"></i> System Overview
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('admin_emp_manage') }}" class="nav-link active">
+          <i class="fas fa-users-cog me-2"></i> User Accounts
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('admin_regularization') }}" class="nav-link">
+          <i class="fas fa-history me-2"></i> Regularizations
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('admin_leave_management') }}" class="nav-link">
+          <i class="fas fa-calendar-check me-2"></i> Leave Requests
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('admin_logout') }}" class="nav-link">
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+      </li>
+    </ul>
+    </div>
+
+    <div class="main-content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+        <div class="container-fluid">
+          <button class="btn btn-primary d-lg-none" type="button" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <a class="navbar-brand ms-3" href="#">
+            <span class="brand-text">
+                <span class="brand-argus">Argus</span><span class="brand-scan">Scan</span>
+            </span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="container-fluid p-4">
+        <div class="page-header mb-4">
+          <h4 class="mb-0">Employee Management</h4>
+          <div>
+            <button class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#bulkImportModal">
+              <i class="fas fa-cloud-upload-alt me-1"></i> Bulk Import
+            </button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#emailReportModal">
+                <i class="fas fa-envelope me-1"></i> Email Report
+            </button>
+          </div>
+        </div>
+
+        <div class="accordion mb-4" id="filterAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFilter">
+              <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="true" aria-controls="collapseFilter">
+                <i class="fas fa-filter me-2"></i>Filter Employees
+              </button>
+            </h2>
+            <div id="collapseFilter" class="accordion-collapse collapse show" aria-labelledby="headingFilter" data-bs-parent="#filterAccordion">
+              <div class="accordion-body">
+                <form class="row g-3" id="filterForm">
+                  <div class="col-md-6">
+                    <div class="form-floating search-box">
+                      <i class="fas fa-search search-icon"></i>
+                      <input type="text" class="form-control ps-5" id="searchQuery" placeholder="Search employees...">
+                      <label for="searchQuery">Search Employees</label>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-floating">
+                      <select class="form-select" id="departmentFilter" aria-label="Department Filter">
+                        <option value="">All Departments</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="HR">Human Resources</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Not assigned">Not assigned</option>
+                      </select>
+                      <label for="departmentFilter">Department</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-secondary w-100" id="resetFilters">
+                      <i class="fas fa-sync-alt me-1"></i>Reset
+                    </button>
+                  </div>
+                  <div class="col-12 text-end">
+                    <div class="dropdown">
+                      <button class="btn btn-success dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-file-excel me-2"></i> Export
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <li><a class="dropdown-item export-download-btn" href="#" data-format="xlsx">Excel</a></li>
+                        <li><a class="dropdown-item export-download-btn" href="#" data-format="csv">CSV</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card table-card shadow-sm animated fadeInUp" style="animation-delay: 0.1s;">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle" id="employeesTable">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Employee ID</th>
+                    <th>Personal Email</th>
+                    <th>Department</th>
+                    <th>Position</th>
+                    <th>Status</th> <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="employeesTableBody">
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="bulkImportModal" tabindex="-1" aria-labelledby="bulkImportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered **modal-dialog-scrollable**">
+      <div class="modal-content">
+        <form id="bulkImportForm" enctype="multipart/form-data">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="bulkImportModalLabel"><i class="fas fa-cloud-upload-alt me-2"></i>Bulk Import Employees</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="accordion mb-4" id="bulkImportAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="fas fa-info-circle me-2"></i> Quick Guide: Prepare Your Data File
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#bulkImportAccordion">
+                  <div class="accordion-body bg-light">
+                    <p>To successfully import employees, your Excel (<code>.xlsx</code>) or CSV (<code>.csv</code>) file must contain the following headers (case-sensitive and exactly as shown):</p>
+                    <div class="table-responsive">
+                      <table class="table table-sm table-bordered mb-3" id="bulkImportHeadersTable">
+                        <thead class="table-dark">
+                          <tr>
+                            <th>emp_id</th>
+                            <th>full_name</th>
+                            <th>email</th>
+                            <th>password</th>
+                            <th>personal_email</th>
+                            <th>department</th>
+                            <th>position</th>
+                            <th>image_filename</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><code>EMP001</code></td>
+                            <td><code>John Doe</code></td>
+                            <td><code>john.d@innovasolutions.com</code></td>
+                            <td><code>SecurePwd1!</code></td>
+                            <td><code>john.personal@example.com</code></td>
+                            <td><code>Engineering</code></td>
+                            <td><code>Software Engineer</code></td>
+                            <td><code>john_doe.jpg</code></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="copyHeadersBtn">
+                      <i class="fas fa-copy me-1"></i> Copy All Headers
+                    </button>
+                    <p class="mt-3">Ensure all employee photos referenced in <code>image_filename</code> are uploaded together in a zip file if using the shared folder loader, or selected directly below if using local import. Photos should be clear headshots for face recognition.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3 p-3 border rounded bg-light">
+              <label for="importFile" class="form-label fw-bold"><i class="fas fa-file-upload me-2"></i>1. Upload Employee Data File</label>
+              <input type="file" class="form-control" name="importFile" id="importFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+              <div class="form-text">Optional: Select a data file for direct import.</div>
+            </div>
+
+            <div class="mb-4 p-3 border rounded bg-light">
+              <label for="importImages" class="form-label fw-bold"><i class="fas fa-images me-2"></i>2. Upload Corresponding Employee Photos</label>
+              <input type="file" class="form-control" name="importImages" id="importImages" multiple>
+              <div class="form-text">Optional: Select all image files.</div>
+            </div>
+
+            <div id="import-progress" class="progress mb-3" style="display: none; height: 25px;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+            <div id="import-status" class="mt-2 fw-semibold text-info text-center"></div>
+          </div>
+          <div class="modal-footer d-flex justify-content-end">
+            <div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="startImport">
+                <i class="fas fa-cloud-upload-alt me-1"></i> Start Import
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deactivateEmployeeModal" tabindex="-1" aria-labelledby="deactivateEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deactivateEmployeeModalLabel"><i class="fas fa-user-times me-2"></i>Confirm Deactivation</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to <strong>deactivate</strong> this employee account?</p>
+          <p class="fw-bold">Employee: <span id="employeeToDeactivate"></span></p>
+          <p class="text-muted">Deactivated accounts cannot log in or track attendance, but all historical data will be preserved.</p>
+          <input type="hidden" id="deactivateEmpId">
+           <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="sendEmailOnDeactivate" checked>
+            <label class="form-check-label" for="sendEmailOnDeactivate">
+              Send email notification to employee
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeactivate">Deactivate Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="activateEmployeeModal" tabindex="-1" aria-labelledby="activateEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="activateEmployeeModalLabel"><i class="fas fa-user-check me-2"></i>Confirm Activation</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to <strong>activate</strong> this employee account?</p>
+          <p class="fw-bold">Employee: <span id="employeeToActivate"></span></p>
+          <p class="text-muted">Activated accounts will be able to log in and track attendance.</p>
+          <input type="hidden" id="activateEmpId">
+           <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="sendEmailOnActivate" checked>
+            <label class="form-check-label" for="sendEmailOnActivate">
+              Send email notification to employee
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" id="confirmActivate">Activate Account</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="permanentDeleteEmployeeModal" tabindex="-1" aria-labelledby="permanentDeleteEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="permanentDeleteEmployeeModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Permanent Deletion</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-danger"><strong>WARNING:</strong> This action will permanently delete the employee and ALL their associated data (attendance, leave requests, etc.). This cannot be undone.</p>
+          <p class="fw-bold">Employee: <span id="employeeToPermanentDelete"></span></p>
+          <input type="hidden" id="permanentDeleteEmpId">
+           <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="sendEmailOnPermanentDelete" checked>
+            <label class="form-check-label" for="sendEmailOnPermanentDelete">
+              Send email notification to employee
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-dark" id="confirmPermanentDelete">Permanent Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal fade" id="emailReportModal" tabindex="-1" aria-labelledby="emailReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailReportModalLabel"><i class="fas fa-envelope me-2"></i>Email Report to Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="employeeReportEmailForm">
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="reportRecipientEmployee" aria-label="Select Employee" required>
+                                <option value="">Select an employee...</option>
+                            </select>
+                            <label for="reportRecipientEmployee">Select Employee</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reportType" class="form-label">Report Type</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="reportType" id="attendanceReport" value="attendance" checked>
+                                <label class="form-check-label" for="attendanceReport">Attendance Report</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="reportType" id="regularizationReport" value="regularization">
+                                <label class="form-check-label" for="regularizationReport">Regularization Report</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="reportStartDate" placeholder="Start Date">
+                                <label for="reportStartDate">Start Date</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="reportEndDate" placeholder="End Date">
+                                <label for="reportEndDate">End Date</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="reportEmailSubject" placeholder="Subject" value="Your ArgusScan Attendance Report" required>
+                            <label for="reportEmailSubject">Subject</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <textarea class="form-control" id="reportEmailMessageBody" rows="10" placeholder="Message Body (HTML supported)" required></textarea>
+                            <label for="reportEmailMessageBody">Message Body (HTML supported)</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="sendEmployeeReportBtn">Send Report</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto" id="toastTitle">Notification</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toastMessage">
+        Notification message here
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../static/js/admin_emp_manage.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/js/service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+</body>
+</html>
