@@ -1,0 +1,645 @@
+:root {
+  /* Base Black and White Color Palette */
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --header-bg-color: #f8f9fa;
+  --border-color: #dee2e6;
+  --dark-accent: #212529; /* Used for sidebar background, dark table headers, footers */
+  --white-color: #ffffff; /* Explicit white */
+  --secondary-text: #6c757d; /* Medium grey for secondary text */
+
+  /* ArgusScan Brand Colors */
+  --brand-color-1: #3A5C90; /* Darker Slate Blue */
+  --brand-color-2: #5A7BB0; /* Darker Lighter Slate Blue */
+
+  /* Bootstrap-like Semantic Colors (Light Mode) */
+  --bs-primary: var(--brand-color-1);
+  --bs-primary-rgb: 58, 92, 144; /* RGB for #3A5C90 */
+  
+  --bs-success: #198754;
+  --bs-success-rgb: 25, 135, 84;
+  
+  --bs-danger: #dc3545;
+  --bs-danger-rgb: 220, 53, 69;
+  
+  --bs-warning: #ffc107;
+  --bs-warning-rgb: 255, 193, 7;
+  
+  --bs-info: #0dcaf0;
+  --bs-info-rgb: 13, 202, 240;
+
+  /* Greyscale shades for UI elements where standard Bootstrap secondary colors might be too bright or brand is not needed */
+  --bs-secondary-50: #f8f9fa;
+  --bs-secondary-100: #e9ecef;
+  --bs-secondary-200: #dee2e6;
+  --bs-secondary-300: #ced4da;
+  --bs-secondary-400: #adb5bd;
+  --bs-secondary-500: #6c757d;
+  --bs-secondary-600: #5a6268;
+  --bs-secondary-700: #495057;
+  --bs-secondary-800: #343a40;
+  --bs-secondary-900: #212529;
+
+  /* UI Properties */
+  --border-radius: 12px;
+  --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  --transition: all 0.2s ease-in-out; /* Unified transition variable */
+}
+
+/* --- Base & Typography --- */
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Keyframe Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Navbar --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--white-color) !important; /* Standardized to white */
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.navbar .navbar-brand {
+    font-weight: 700;
+}
+
+/* Two-tone brand text styles */
+.brand-text {
+    font-weight: 700;
+}
+.brand-argus {
+    color: var(--brand-color-1);
+}
+.brand-scan {
+    color: var(--brand-color-2);
+}
+
+
+.navbar .nav-link {
+    color: var(--dark-accent) !important;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: var(--secondary-text) !important;
+}
+
+.navbar .nav-item .btn {
+    transition: var(--transition); /* Use unified transition */
+    background-color: var(--bs-primary); /* Use primary brand color for buttons */
+    border-color: var(--bs-primary);
+    color: var(--white-color) !important;
+}
+
+.navbar .nav-item .btn:hover {
+    background-color: var(--brand-color-2); /* Lighter brand color on hover */
+    border-color: var(--brand-color-2);
+    transform: translateY(-2px);
+}
+
+/* --- Main Header --- */
+.main-header {
+  background-color: var(--header-bg-color);
+  color: var(--text-color);
+  padding: 3rem 1rem; /* Reduced padding */
+  text-align: center;
+  position: relative;
+}
+
+.main-header .container {
+    animation: fadeIn 1s ease-out;
+}
+
+.main-header h1 {
+  font-size: 2.2rem; /* Smaller font size */
+  font-weight: 700;
+  animation: slideInDown 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.main-header p {
+  font-size: 1rem; /* Smaller font size */
+  color: var(--secondary-text);
+  margin-top: 0.5rem;
+  animation: slideInDown 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+/* --- Containers & Cards --- */
+.auth-container {
+  background: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1s forwards;
+  opacity: 0;
+  padding: 2rem;
+}
+.col-lg-8 { animation-delay: 0.2s; }
+
+
+.auth-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+h2.fw-semibold { color: var(--text-color); }
+
+/* --- Sidebar (now offcanvas on mobile, static on desktop) --- */
+/* Base styles for the content within the offcanvas / desktop sidebar */
+.sidebar {
+  background: var(--white-color); /* Matches .auth-container */
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+  padding: 2rem; /* Consistent padding */
+  animation: fadeInUp 1s forwards; /* Re-apply if still needed for desktop reveal */
+  opacity: 0; /* Ensures animation works */
+}
+.col-lg-4 .sidebar { animation-delay: 0.4s; } /* Specific delay for this column's sidebar */
+
+
+.sidebar:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--text-color);
+  padding-bottom: 0.75rem;
+}
+.sidebar-nav { list-style: none; padding: 0; margin: 0; }
+.sidebar-nav li a {
+  display: flex; align-items: center; padding: 0.75rem 0.5rem;
+  color: var(--secondary-text); text-decoration: none; transition: var(--transition);
+  border-radius: 8px;
+}
+.sidebar-nav li a:hover {
+  color: var(--text-color); background-color: var(--header-bg-color);
+}
+
+/* --- Offcanvas Specific Adjustments --- */
+.offcanvas.offcanvas-end {
+    background: var(--white-color);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow);
+}
+
+.offcanvas-header {
+    background-color: var(--header-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.offcanvas-title {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.offcanvas-body {
+    padding: 1rem; /* Adjust padding if needed for offcanvas content */
+}
+
+/* Hide the offcanvas on large screens, show the original sidebar container */
+@media (min-width: 992px) {
+  .sidebar-offcanvas {
+    visibility: visible !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important; /* Reset transform for desktop */
+    position: static !important;
+    padding: 0 !important;
+  }
+
+  .sidebar-offcanvas .offcanvas-header {
+    display: none; /* Hide offcanvas header on desktop */
+  }
+
+  /* Ensure the contained .sidebar element is visible and styled on desktop */
+  .sidebar-offcanvas .offcanvas-body .sidebar {
+    opacity: 1; /* Make visible for desktop */
+    animation: none; /* Disable animation */
+    transform: none; /* Disable transform */
+    box-shadow: var(--box-shadow); /* Reapply box-shadow for desktop card look */
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* --- Employee Authentication --- */
+.nav-tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+.nav-tabs .nav-link {
+  font-weight: 500;
+  padding: 0.75rem 0.25rem;
+  margin: 0 1rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--secondary-text);
+  transition: var(--transition);
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:hover {
+  color: var(--text-color);
+  border-bottom-color: var(--text-color);
+}
+.tab-content .tab-pane {
+    animation: fadeIn 0.5s;
+    padding-top: 1.5rem;
+}
+
+/* --- Camera Area --- */
+.camera-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  background-color: var(--border-color);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+  min-height: 280px;
+  overflow: hidden;
+}
+.face-camera {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+.recognition-status {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  color: var(--white-color);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* --- User Info Section (after recognition) --- */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.user-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--brand-color-1); /* Uses brand color for consistency */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.user-info h4 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-accent);
+}
+
+.user-info p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-info .status-badge {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+.user-info .status-in {
+  background-color: var(--bs-success); /* Use semantic success color */
+  color: var(--white-color);
+}
+
+.user-info .status-out {
+  background-color: var(--bs-secondary-500); /* Use a secondary gray, or another semantic if desired */
+  color: var(--white-color);
+}
+
+.date-time-info {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+}
+
+/* --- Location Status --- */
+.location-status {
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.location-status .text-primary { /* Ensures icon matches the primary color */
+  color: var(--bs-primary) !important; 
+}
+
+
+/* --- Footer --- */
+.footer {
+  background-color: var(--dark-accent);
+}
+
+/* --- NEW: Install Banner Styles --- */
+.install-banner {
+    position: fixed;
+    bottom: -100px; /* Initially hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 500px;
+    background-color: var(--dark-accent);
+    color: var(--white-color);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1050;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+    transition: bottom 0.5s ease-in-out;
+}
+
+.install-banner.show {
+    bottom: 20px; /* Slides in */
+}
+
+.install-banner-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.install-banner-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.install-banner-text small {
+    color: var(--secondary-text);
+}
+
+.install-banner .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+
+/* --- NEW: Install Animation Styles --- */
+.install-animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.install-animation-container.show {
+    opacity: 1;
+}
+
+.install-animation-container p {
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 20px;
+    animation: fadeInUp 0.5s 1s both;
+}
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 3;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    animation: scale .3s ease-in-out .9s both;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: var(--bs-success); /* Use semantic success color */
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* --- Dark Mode Support (Black & White Inversion) --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #000000;
+    --text-color: #ffffff;
+    --header-bg-color: #1a1a1a;
+    --border-color: #333333;
+    --dark-accent: #1a1a1a;
+    --white-color: #ffffff;
+    --secondary-text: #aaaaaa;
+
+    /* Dark mode ArgusScan Brand Colors (swapped for contrast) */
+    --brand-color-1: #5A7BB0; /* Lighter Slate Blue for Argus */
+    --brand-color-2: #3A5C90; /* Darker Slate Blue for Scan */
+    
+    /* Dark mode Bootstrap-like Semantic Colors */
+    --bs-primary: var(--brand-color-1);
+    --bs-primary-rgb: 90, 123, 176;
+    
+    --bs-success: #28a745; /* Adjusted for dark mode contrast */
+    --bs-success-rgb: 40, 167, 69;
+    
+    --bs-danger: #dc3545;
+    --bs-danger-rgb: 220, 53, 69;
+    
+    --bs-warning: #ffc107;
+    --bs-warning-rgb: 255, 193, 7;
+    
+    --bs-info: #0dcaf0;
+    --bs-info-rgb: 13, 202, 240;
+  }
+
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .navbar {
+    background-color: var(--dark-accent) !important;
+    border-bottom-color: var(--border-color);
+  }
+
+  .navbar .nav-link {
+    color: var(--white-color) !important;
+  }
+  .navbar .nav-link:hover {
+    color: var(--secondary-text) !important;
+  }
+
+  .main-header {
+    background-color: var(--header-bg-color);
+  }
+
+  .auth-container,
+  .sidebar,
+  .offcanvas.offcanvas-end {
+    background: var(--header-bg-color);
+    border-color: var(--border-color);
+  }
+
+  .offcanvas-header {
+      background-color: var(--header-bg-color);
+      border-bottom-color: var(--border-color);
+  }
+
+  .offcanvas-title {
+      font-weight: 700;
+      color: var(--text-color);
+  }
+
+  h2.fw-semibold {
+    color: var(--text-color);
+  }
+
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-link:hover {
+    color: var(--text-color);
+    border-bottom-color: var(--text-color);
+  }
+
+  .recognition-status {
+    background-color: rgba(255,255,255,0.2);
+    color: var(--text-color);
+    border-color: rgba(0,0,0,0.2);
+  }
+
+  .user-image {
+    border-color: var(--brand-color-1);
+  }
+
+  .user-info h4 {
+    color: var(--text-color);
+  }
+
+  .user-info .status-in {
+    background-color: var(--bs-success); /* Use semantic success color */
+    color: var(--white-color);
+  }
+
+  .user-info .status-out {
+    background-color: var(--bs-secondary-600); /* Darker secondary for contrast */
+    color: var(--white-color);
+  }
+
+  .location-status .text-primary {
+    color: var(--bs-primary) !important;
+  }
+
+  .sidebar-title {
+    color: var(--text-color);
+    border-bottom-color: var(--text-color);
+  }
+
+  .sidebar-nav li a {
+    color: var(--secondary-text);
+  }
+  .sidebar-nav li a:hover {
+    color: var(--text-color);
+    background-color: rgba(255,255,255,0.05);
+  }
+
+  .footer {
+    background-color: var(--dark-accent);
+  }
+
+  .install-banner {
+    background-color: var(--dark-accent);
+    color: var(--white-color);
+  }
+  .install-banner-text small {
+    color: var(--secondary-text);
+  }
+
+  .checkmark-circle {
+    stroke: var(--bs-success);
+  }
+}

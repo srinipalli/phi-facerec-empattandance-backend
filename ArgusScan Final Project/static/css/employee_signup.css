@@ -1,0 +1,487 @@
+:root {
+  /* Base Black and White Color Palette */
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --header-bg-color: #f8f9fa;
+  --border-color: #dee2e6;
+  --dark-accent: #212529;
+  --white-color: #ffffff;
+  --secondary-text: #6c757d;
+
+  /* ArgusScan Brand Colors */
+  --brand-color-1: #3A5C90; /* Darker Slate Blue - consistent across pages */
+  --brand-color-2: #5A7BB0; /* Darker Lighter Slate Blue - consistent across pages */
+
+  /* Bootstrap-like Semantic Colors (Light Mode) */
+  --bs-primary: var(--brand-color-1);
+  --bs-primary-rgb: 58, 92, 144;
+  
+  --bs-success: #198754;
+  --bs-success-rgb: 25, 135, 84;
+  
+  --bs-danger: #dc3545;
+  --bs-danger-rgb: 220, 53, 69;
+  
+  --bs-warning: #ffc107;
+  --bs-warning-rgb: 255, 193, 7;
+  
+  --bs-info: #0dcaf0;
+  --bs-info-rgb: 13, 202, 240;
+
+  /* UI Properties */
+  --border-radius: 12px;
+  --box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  --transition: all 0.2s ease-in-out; /* Changed from --transition-fast */
+}
+
+/* --- Base & Typography --- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.7;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Keyframe Animations --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Navbar --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--white-color) !important; /* Standardized to white */
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  animation: slideInDown 0.8s ease-out forwards;
+}
+
+.navbar .navbar-brand {
+  font-weight: 700;
+}
+
+/* Two-tone brand text styles */
+.brand-text {
+  font-weight: 700;
+}
+.brand-argus {
+  color: var(--brand-color-1);
+}
+.brand-scan {
+  color: var(--brand-color-2);
+}
+
+.navbar .nav-link {
+  color: var(--dark-accent) !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  color: var(--secondary-text) !important;
+}
+
+.navbar .nav-item .btn {
+  transition: var(--transition);
+  background-color: var(--text-color);
+  border-color: var(--text-color);
+  color: var(--white-color) !important;
+}
+
+.navbar .nav-item .btn:hover {
+  background-color: #343a40;
+  border-color: #343a40;
+  transform: translateY(-2px);
+}
+
+/* --- Main Header --- */
+.portal-header {
+  background-color: var(--header-bg-color);
+  color: var(--text-color);
+  padding: 3rem 1rem; /* Reduced padding */
+  text-align: center;
+  position: relative;
+  animation: fadeIn 1s ease-out;
+}
+
+.portal-header h1 {
+  font-size: 2.2rem; /* Smaller font size */
+  font-weight: 700;
+  animation: slideInDown 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.portal-header p {
+  font-size: 1rem; /* Smaller font size */
+  color: var(--secondary-text);
+  margin-top: 0.5rem;
+  animation: slideInDown 0.8s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+/* --- Containers & Cards --- */
+.portal-card {
+  background: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1s 0.6s forwards;
+  opacity: 0;
+  padding: 2rem;
+}
+
+.portal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+.portal-card-header {
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.portal-card-body {
+  padding: 1rem;
+}
+
+.portal-form-label {
+  font-weight: 600;
+  color: var(--dark-accent);
+}
+
+.portal-form-control {
+  border-radius: 8px; /* Ensure consistency */
+}
+
+/* Specific styling for input groups */
+.input-group-text {
+  background-color: var(--header-bg-color); /* Light background for icons */
+  border-color: var(--border-color);
+  border-right: none;
+  border-radius: 8px 0 0 8px; /* Apply radius only to the left side */
+}
+
+.input-group .form-control {
+  border-radius: 0 8px 8px 0; /* Apply radius only to the right side of the input within group */
+}
+
+.input-group .form-control:focus {
+  border-color: var(--brand-color-1);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Password toggle button within input group */
+.input-group .password-toggle {
+  border-radius: 0 8px 8px 0 !important; /* Ensure radius on the button */
+  border-left: none; /* Remove left border */
+}
+
+/* Password validation icon */
+#password-validation-icon {
+  background-color: var(--header-bg-color);
+  border-color: var(--border-color);
+  border-left: none;
+  border-right: none;
+  display: flex; /* Center content */
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem; /* Adjust padding */
+}
+
+/* Adjustments for inputs when password-validation-icon is visible */
+#password.is-valid,
+#password.is-invalid {
+  border-right: none; /* Remove right border to blend with icon */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+/* MODIFIED: Styling for the main Register button (uses updated brand colors) */
+.btn.portal-btn-primary {
+  background-color: var(--bs-primary); /* Use bs-primary */
+  border-color: var(--bs-primary);
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem;
+  transition: var(--transition);
+}
+
+.btn.portal-btn-primary:hover {
+  background-color: var(--brand-color-2); /* Lighter brand color on hover */
+  border-color: var(--brand-color-2);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the Capture Photo button (remains outline style) */
+#captureBtn {
+  background-color: transparent; /* Ensure transparent background */
+  border-color: var(--bs-primary); /* Use bs-primary */
+  color: var(--bs-primary); /* Use bs-primary */
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem;
+  transition: var(--transition);
+}
+
+#captureBtn:hover {
+  background-color: var(--bs-primary); /* Fill with primary color on hover */
+  color: var(--white-color); /* White text on hover */
+  border-color: var(--bs-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/* --- Camera Area --- */
+.camera-container {
+  position: relative;
+  display: inline-block;
+  border-radius: var(--border-radius);
+  background-color: var(--border-color);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 4px solid var(--white-color);
+}
+.face-camera {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  display: block;
+}
+
+/* --- Password Strength --- */
+.password-feedback {
+  display: none; /* Hide hints by default */
+  transition: var(--transition);
+}
+
+.password-strength {
+  height: 5px;
+  background: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  background: var(--bs-danger); /* Use bs-danger for weak */
+  transition: var(--transition);
+}
+
+.password-strength-medium {
+  background: var(--bs-warning); /* Use bs-warning */
+}
+
+.password-strength-strong {
+  background: var(--bs-success); /* Use bs-success */
+}
+
+.password-hints {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.password-hints ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-hints li {
+  color: var(--bs-danger); /* Default to invalid color */
+  transition: color 0.3s ease-in-out;
+}
+
+.password-hints li.valid {
+  color: var(--bs-success); /* Use bs-success */
+}
+
+.password-strength-very-strong {
+  background: var(--bs-success); /* Use bs-success */
+}
+
+/* --- Footer --- */
+.footer {
+  background-color: var(--dark-accent);
+}
+
+/* UPDATED: Override Bootstrap's default validation icons for BOTH states */
+.form-control.is-valid,
+.form-control.is-invalid {
+    background-image: none !important;
+}
+
+/* Error messages below inputs */
+.error-message {
+    color: var(--bs-danger); /* Use bs-danger */
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+    display: block; /* Ensure it takes its own line */
+}
+
+/* Dark Mode Support (Black & White Inversion) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #000000; /* Corrected from #1a1a1a */
+    --text-color: #ffffff;
+    --header-bg-color: #1a1a1a;
+    --border-color: #333333;
+    --dark-accent: #1a1a1a; /* Corrected from #000000 */
+    --white-color: #ffffff;
+    --secondary-text: #aaaaaa;
+
+    /* Dark mode brand colors for signup to match consistent pages */
+    --brand-color-1: #5A7BB0; /* Lighter blue for contrast in dark mode */
+    --brand-color-2: #3A5C90; /* Original slate blue for hover/active */
+
+    /* Dark mode Bootstrap-like Semantic Colors */
+    --bs-primary: var(--brand-color-1);
+    --bs-primary-rgb: 90, 123, 176;
+    
+    --bs-success: #28a745;
+    --bs-success-rgb: 40, 167, 69;
+    
+    --bs-danger: #dc3545;
+    --bs-danger-rgb: 220, 53, 69;
+    
+    --bs-warning: #ffc107;
+    --bs-warning-rgb: 255, 193, 7;
+    
+    --bs-info: #0dcaf0;
+    --bs-info-rgb: 13, 202, 240;
+  }
+
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  .navbar {
+    background-color: var(--dark-accent) !important;
+    border-bottom-color: var(--border-color);
+  }
+
+  .navbar .nav-link {
+    color: var(--white-color) !important;
+  }
+  .navbar .nav-link:hover {
+    color: var(--secondary-text) !important;
+  }
+
+  .portal-card {
+    background: var(--header-bg-color);
+    border-color: var(--border-color);
+  }
+
+  .portal-card-header {
+    border-bottom-color: var(--border-color);
+  }
+
+  .portal-form-label {
+    color: var(--white-color);
+  }
+
+  .portal-form-control,
+  .input-group .form-control { /* Adjusted selector */
+    background-color: #333333;
+    border-color: #555555;
+    color: var(--text-color);
+  }
+
+  .portal-form-control:focus,
+  .input-group .form-control:focus { /* Adjusted selector */
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+  }
+
+  .input-group-text { /* Adjusted selector */
+    background-color: var(--bs-secondary-800); /* Darker background for icons */
+    border-color: #555555;
+    color: var(--secondary-text);
+  }
+
+  #password-validation-icon {
+    background-color: var(--dark-accent);
+    border-color: var(--border-color);
+  }
+
+  .portal-btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+  .portal-btn-primary:hover {
+    background-color: var(--brand-color-2);
+    border-color: var(--brand-color-2);
+  }
+
+  #captureBtn {
+    background-color: transparent !important;
+    border-color: var(--bs-primary) !important;
+    color: var(--bs-primary) !important;
+  }
+
+  #captureBtn:hover {
+    background-color: var(--bs-primary) !important; /* Changed to use bs-primary */
+    color: var(--white-color) !important; /* Changed from dark-accent for consistency */
+  }
+
+  .password-strength {
+    background: var(--bs-secondary-800);
+  }
+
+  .password-hints li {
+    color: var(--bs-danger); /* Use bs-danger */
+  }
+  .password-hints li.valid {
+    color: var(--bs-success); /* Use bs-success */
+  }
+
+  .alert.alert-danger {
+    background-color: rgba(var(--bs-danger-rgb), 0.2); /* Use rgba with rgb var */
+    color: var(--text-color); /* Ensure text is readable */
+    border-color: var(--bs-danger);
+  }
+}
